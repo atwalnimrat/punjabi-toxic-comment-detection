@@ -35,4 +35,4 @@
     python crawler/yt_crawler.py
    ```
 
-   Collected comments will be saved to: `crawler/data/raw_comments.csv`
+   Collected comments will be saved to: `data/raw_comments.csv`

@@ -1,11 +1,12 @@
 import os
-from googleapiclient.discovery import build
 import pandas as pd
 from tqdm import tqdm
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
 
 from config import API_KEY
 
-OUTPUT_FILE = "crawler/data/raw_comments.csv"
+OUTPUT_FILE = "data/raw_comments.csv"
 
 youtube = build("youtube", "v3", developerKey=API_KEY)
 
@@ -58,20 +59,33 @@ def fetch_comments(video_id, existing_ids, max_comments=500):
     return comments
 
 def main():
-    queries = ("Punjabi song", "ਪੰਜਾਬੀ", "Punjabi news")
+    queries = ("Punjabi song", "Punjabi news", "Punjabi", "ਪੰਜਾਬੀ")
 
     existing_ids = load_existing_ids()
     print(f"Loaded {len(existing_ids)} existing comments")
     
     new_comments = []
+    flag = 0
 
     for query in queries:
         video_ids = search_videos(query)
         for vid in tqdm(video_ids, desc=f"Query: {query}"):
             try:
                 new_comments.extend(fetch_comments(vid, existing_ids))
+            except HttpError as e:
+                error_reason = e.error_details[0]["reason"]
+                if error_reason == "commentsDisabled":
+                    print(f"[INFO] Comments are disabled for video: {vid}")
+                elif error_reason == "quotaExceeded":
+                    print("[INFO] YouTube API quota exceeded — stopping crawler for now")
+                    flag = 1
+                    break
+                else:
+                    print(f"[ERROR] YouTube API error for video {vid}: {error_reason}")
             except Exception as e:
-                print(f"Error with video {vid}: {e}")
+                print(f"[ERROR] Error with video {vid}: {e}")
+        if flag == 1:
+            break
 
     save_comments(new_comments)
     print(f"Saved {len(new_comments)} new comments")
