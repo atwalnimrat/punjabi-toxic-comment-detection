@@ -5,3 +5,5 @@ crawler/__pycache__
 
 data/raw_comments.csv
 data/clean_comments.csv
+
+models/lid.176.bin

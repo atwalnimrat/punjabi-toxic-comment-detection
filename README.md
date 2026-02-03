@@ -2,21 +2,45 @@
 
 ## Setup & Configuration
 
-1. **Install dependencies**:
+1. **Setup a virtual enviornment**
 
-   All required Python packages are listed in `requirements.txt`.
+   Create a python 3.11 or below virtual enviornment for this project. Some dependencies like `fastText` do not yet offer full, stable support or pre-built wheels for Python 3.13 
+
+   I'm using a python 3.10 virtual enviornment which can be setup with the following:
+
+   ```bash
+   python3.10 -m venv venv
+   source venv/bin/activate
+   ```
+
+2. **Install dependencies**:
+
+   All required Python packages are listed in `requirements.txt`. Install them using:
 
    ```bash
    pip install -r requirements.txt
    ```
 
-2. **API key configuration (`config.py`)**:
+   This project uses `lid.176.bin` which is a pre-trained fastText model used for language identification in Python. Download it using:
 
-   This project uses the YouTube Data API v3, which requires an API key.
+   ```bash
+   wget https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.bin
+   ```
 
-   Create a file at: `crawler/config.py`
+   and put the downloaded model in `models/`
 
-   and add your API key:
+   > **Note**: `lid.176.bin` is intentionally not visible in the repository because it is listed in `.gitignore`.
+
+   The `fasttext` Python library may have compatibility issues with newer versions of `NumPy` due to the original library no longer being actively maintained by Meta. This often results in an error when loading the `lid.176.bin` model. Install a compatible version of numpy using:
+
+   ```bash
+   pip uninstall numpy -y
+   pip install "numpy<2.0"
+   ```   
+
+3. **API key configuration (`config.py`)**:
+
+   This project uses the YouTube Data API v3, which requires an API key. Create a file at `crawler/config.py` and add your API key:
 
    ```bash
     API_KEY = "YOUR_YOUTUBE_API_KEY"
@@ -24,10 +48,9 @@
 
    You can create an API key by following the official documentation: https://developers.google.com/youtube/v3/getting-started
 
-   > **Note**: `config.py` is intentionally not visible in the repository because it is listed in `.gitignore`.
-   > This is done to prevent accidentally exposing sensitive API keys.
+   > **Note**: `config.py` is intentionally not visible in the repository because it is listed in `.gitignore`. This is done to prevent accidentally exposing sensitive API keys.
 
-3. **Running the crawler**:
+4. **Running the crawler**:
 
    Once dependencies are installed and `config.py` is set up, you can run the crawler:
 
@@ -37,5 +60,10 @@
 
    Collected comments will be saved to: `data/raw_comments.csv`
 
-   > **Note**: `raw_comments.csv` is intentionally not visible in the repository because it is listed in `.gitignore`.
-   > This is done because it is too big (~500k records).
+5. **Cleaning the raw data**:
+
+
+
+   > **Note**: `raw_comments.csv` and `clean_comments.csv` are intentionally not visible in the repository because it is listed in `.gitignore`. This is done because they are too big (~500k records).
+
+
