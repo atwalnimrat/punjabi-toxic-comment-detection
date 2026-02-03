@@ -1,3 +1,7 @@
+venv
+
 crawler/config.py
 crawler/__pycache__
+
 data/raw_comments.csv
+data/clean_comments.csv
