@@ -1,2 +1,3 @@
 crawler/config.py
 crawler/__pycache__
+data/raw_comments.csv

@@ -68,27 +68,34 @@ def main():
     flag = 0
 
     for query in queries:
-        video_ids = search_videos(query)
-        for vid in tqdm(video_ids, desc=f"Query: {query}"):
-            try:
-                new_comments.extend(fetch_comments(vid, existing_ids))
-            except HttpError as e:
-                error_reason = e.error_details[0]["reason"]
-                if error_reason == "commentsDisabled":
-                    print(f"[INFO] Comments are disabled for video: {vid}")
-                elif error_reason == "quotaExceeded":
-                    print("[INFO] YouTube API quota exceeded — stopping crawler for now")
-                    flag = 1
-                    break
-                else:
-                    print(f"[ERROR] YouTube API error for video {vid}: {error_reason}")
-            except Exception as e:
-                print(f"[ERROR] Error with video {vid}: {e}")
+        try:
+            video_ids = search_videos(query)
+            for vid in tqdm(video_ids, desc=f"Query: {query}"):
+                try:
+                    new_comments.extend(fetch_comments(vid, existing_ids))
+                except HttpError as e:
+                    error_reason = e.error_details[0]["reason"]
+                    if error_reason == "commentsDisabled":
+                        print(f"[INFO] Comments are disabled for video: {vid}")
+                    elif error_reason == "quotaExceeded":
+                        print("[ERROR] YouTube API error: quota exceeded \nStopping crawler for now...")
+                        flag = 1
+                        break
+                    else:
+                        print(f"[ERROR] YouTube API error for video {vid}: {error_reason}")
+        except HttpError as e:
+            if e.error_details[0]["reason"] == "quotaExceeded":
+                print(f"[ERROR] YouTube API error: quota exceeded \nTry again tomorrow.")
+            else:
+                print(f"[ERROR] YouTube API error: {e.error_details[0]["reason"]}")
+            flag = 1
+            break
         if flag == 1:
             break
-
-    save_comments(new_comments)
-    print(f"Saved {len(new_comments)} new comments")
+    return new_comments
 
 if __name__ == "__main__":
-    main()
+    new_comments = main()
+    save_comments(new_comments)
+    if len(new_comments) > 0:
+        print(f"Saved {len(new_comments)} new comments")
