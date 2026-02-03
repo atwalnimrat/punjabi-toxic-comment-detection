@@ -36,3 +36,6 @@
    ```
 
    Collected comments will be saved to: `data/raw_comments.csv`
+
+   > **Note**: `raw_comments.csv` is intentionally not visible in the repository because it is listed in `.gitignore`.
+   > This is done because it is too big (~500k records).
