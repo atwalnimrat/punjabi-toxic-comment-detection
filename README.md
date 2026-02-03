@@ -4,12 +4,10 @@
 
 1. **Setup a virtual enviornment**
 
-   Create a python 3.11 or below virtual enviornment for this project. Some dependencies like `fastText` do not yet offer full, stable support or pre-built wheels for Python 3.13 
-
-   I'm using a python 3.10 virtual enviornment which can be setup with the following:
+   Create a python 3.11 or below virtual enviornment for this project. Some dependencies like `fastText` do not yet offer full, stable support or pre-built wheels for Python 3.13. It can be setup with the following:
 
    ```bash
-   python3.10 -m venv venv
+   python3.11 -m venv venv
    source venv/bin/activate
    ```
 

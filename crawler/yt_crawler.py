@@ -87,7 +87,7 @@ def main():
             if e.error_details[0]["reason"] == "quotaExceeded":
                 print(f"[ERROR] YouTube API error: quota exceeded \nTry again tomorrow.")
             else:
-                print(f"[ERROR] YouTube API error: {e.error_details[0]["reason"]}")
+                print(f"[ERROR] {e}")
             flag = 1
             break
         if flag == 1:
