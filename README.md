@@ -56,12 +56,18 @@
     python crawler/yt_crawler.py
    ```
 
-   Collected comments will be saved to: `data/raw_comments.csv`
+   This fetchs comments using the YouTube Data API. Collected comments will be saved to: `data/raw_comments.csv`
 
 5. **Cleaning the raw data**:
 
+   Before any language detection is performed, the raw comments need to be cleaned and normalized using:
 
+   ```bash
+   python preprocessing/cleaning.py
+   ```
+
+   Cleaned comments will be saved to: `data/clean_comments.csv`
 
    > **Note**: `raw_comments.csv` and `clean_comments.csv` are intentionally not visible in the repository because it is listed in `.gitignore`. This is done because they are too big (~500k records).
 
-
+6. **Detect punjabi comments**
