@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import httplib2
 from tqdm import tqdm
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
@@ -8,7 +9,8 @@ from config import API_KEY
 
 OUTPUT_FILE = "data/raw_comments.csv"
 
-youtube = build("youtube", "v3", developerKey=API_KEY)
+http = httplib2.Http(timeout=30)
+youtube = build("youtube", "v3", developerKey=API_KEY, http=http)
 
 def load_existing_ids():
     if os.path.exists(OUTPUT_FILE):
