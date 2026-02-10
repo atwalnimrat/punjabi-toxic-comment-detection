@@ -112,14 +112,30 @@ def is_punjabi(text):
     if detect_language(text):
         return True
     return False    
+
+def detect_script(text):
+    has_gurmukhi = is_gurmukhi(text)
+    has_roman = is_roman_punjabi(text)
+
+    if has_gurmukhi and has_roman:
+        return "mixed"
+    elif has_gurmukhi:
+        return "gurmukhi"
+    elif has_roman:
+        return "roman punjabi"
+    else:
+        return "unknown"
     
 df = pd.read_csv("data/clean_comments.csv")
 df["clean_text"] = df["clean_text"].fillna("").astype(str)
 df["is_punjabi"] = df["clean_text"].apply(is_punjabi)
-df = df[["clean_text", "published_at", "is_punjabi"]]
+df = df[["clean_text", "is_punjabi"]]
 
 punjabi_df = df[df["is_punjabi"] == True]
-punjabi_df = punjabi_df[["clean_text", "published_at"]]
+punjabi_df["script"] = punjabi_df["clean_text"].apply(detect_script)
+punjabi_df = punjabi_df[["clean_text", "script"]]
+punjabi_df = punjabi_df.rename(columns={"clean_text": "text"})
+
 punjabi_df.to_csv(OUTPUT_FILE, index=False)
 
 print(f"Punjabi comments: {(len(punjabi_df) / len(df)):.3f} ({len(punjabi_df)})")
