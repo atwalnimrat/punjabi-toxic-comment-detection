@@ -22,7 +22,7 @@ ROMAN_PUNJABI_WORDS = {
 "gharwala", "shehri", "chulha", "behni", "firdi", "phirni", "langar", "sangat", "panth",
 "rehat", "maryada", "sehaj", "bhog", "ardaas", "gurudwara",
 "appah", "kam", "ae", "ve", "ni", "ji", "haan", "haanji", "nai", "nahi", "kyonki", "bas",
-"hi", "vi", "tan", "te", "fer", "phir", "jad", "jado", "thoda", "zyada",
+ "vi", "tan", "te", "fer", "phir", "jad", "jado", "thoda", "zyada",
 "bahla", "bahli", "bahle", "bahut",
 "lagda", "lagdi", "lagde", "laggi", "lagge", "samajh",
 "milda", "mildi", "milde", "milla", "mille",

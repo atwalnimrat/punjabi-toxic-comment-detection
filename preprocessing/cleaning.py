@@ -33,6 +33,7 @@ def clean_text(text):
 df = pd.read_csv("data/raw_comments.csv")
 df.dropna(subset="text")
 df["clean_text"] = df["text"].apply(clean_text)
+df = df.drop_duplicates(subset="clean_text")
 clean_df = df[["text", "clean_text"]]
 
 clean_df.to_csv(OUTPUT_FILE, index=False)
