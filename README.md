@@ -71,3 +71,17 @@
    > **Note**: `raw_comments.csv` and `clean_comments.csv` are intentionally not visible in the repository because it is listed in `.gitignore`. This is done because they are too big (~500k records).
 
 6. **Detect punjabi comments**
+
+   Punjabi comments are detected using a hybrid approach that combines:
+
+   * Gurmukhi Unicode detection
+   * Roman Punjabi lexicon matching
+   * fastText language identification
+
+   Run the detection script:
+
+   ```bash
+   python preprocessing/detectPunjabi.py
+   ```
+
+   Detected punjabi comments will be saved to: `data/punjabi_comments.csv`
